@@ -8,12 +8,13 @@ export interface ReExamItem {
   id: string;
   category: string; // e.g., 'MÔN HỌC', 'PHẨM CHẤT CHỦ YẾU'
   subjectName: string; // e.g., 'Toán', 'Chăm chỉ'
-  currentScore: string; // e.g., 'Điểm 4.5', 'Cần cố gắng'
+  currentScore: string; // e.g., 'Điểm 4.5', 'Cần cố gắng', or 'Mức C\nĐiểm 4'
+  hasDoubleAuth?: boolean; // NEW: If true, requires both Level (T/H/C) and Score (0-10)
   badgeColor: 'red' | 'yellow' | 'orange';
   trainingContent: string;
   inputType: 'text' | 'select';
   options?: string[]; // For select inputs
-  result?: string; // New field to store user input
+  result?: string; // New field to store user input. For double auth, format is "LEVEL|SCORE"
 }
 
 export interface StudentData {
@@ -52,4 +53,4 @@ export interface User {
 
 export type TabType = 'academic' | 'quality' | 'summary';
 
-export type ProcessStatus = 'DRAFT' | 'SUBMITTED' | 'APPROVED' | 'FINALIZED';
+export type ProcessStatus = 'INIT' | 'DRAFT' | 'SUBMITTED' | 'APPROVED' | 'FINALIZED';
