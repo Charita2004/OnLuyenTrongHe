@@ -1333,6 +1333,7 @@ export default function App() {
                                             isAllSelected={isAllSelected}
                                             // FIX: Ignore Principal Approval in Step 3 so the list looks "Failed" even if approved later
                                             ignorePrincipalApproval={currentStep === 3}
+                                            allowApprovedInFailedList={currentStep === 4}
                                         />
                                 )}
                                 {/* Text "Last updated" Removed from here */}

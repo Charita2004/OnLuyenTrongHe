@@ -17,6 +17,7 @@ interface ReExamTableProps {
   onToggleSelectAll?: () => void;
   isAllSelected?: boolean;
   ignorePrincipalApproval?: boolean;
+  allowApprovedInFailedList?: boolean; // [NEW 1] Thêm prop mới
 }
 
 // Helper to clean raw data strings
@@ -34,8 +35,8 @@ const cleanValue = (val: string | undefined): string => {
     return cleaned.trim();
 };
 
-// Reverted CleanBadge to standard style
-const CleanBadge = ({ label, value, color = 'gray' }: { label: string, value: string, color?: 'red' | 'blue' | 'gray' }) => {
+// Reverted CleanBadge to standard style (Giữ nguyên như code cũ của bạn)
+const CleanBadge = ({ label, value, color = 'gray' }: { label: any, value: string, color?: 'red' | 'blue' | 'gray' }) => {
     const bgClass = color === 'red' ? 'bg-red-50 border-red-200 text-red-700' :
                     color === 'blue' ? 'bg-blue-50 border-blue-200 text-blue-700' :
                     'bg-gray-100 border-gray-200 text-gray-700';
@@ -61,7 +62,8 @@ export const ReExamTable: React.FC<ReExamTableProps> = ({
   onToggleSelect,
   onToggleSelectAll,
   isAllSelected = false,
-  ignorePrincipalApproval = false
+  ignorePrincipalApproval = false,
+  allowApprovedInFailedList = false // [NEW 2] Default value
 }) => {
   const isSummary = activeTab === 'summary';
 
@@ -86,10 +88,23 @@ export const ReExamTable: React.FC<ReExamTableProps> = ({
     return !isFail;
   };
 
+  // [NEW 3] Cập nhật logic đếm số lượng hiển thị
   const visibleStudentsCount = students.filter(s => {
     const isAcademicPass = checkAcademicPassStatus(s.items);
     const isFinalPass = isAcademicPass || (!ignorePrincipalApproval && s.isApprovedByPrincipal);
-    if (filterMode === 'failed' && isFinalPass) return false;
+    
+    // Filtering Logic Mới
+    if (filterMode === 'failed') {
+        // Nếu học sinh thật sự đậu về mặt học thuật, không bao giờ hiện ở danh sách Failed
+        if (isAcademicPass) return false;
+
+        // Nếu học sinh rớt học thuật nhưng được duyệt (isFinalPass = true)
+        // Mặc định ẩn, trừ khi allowApprovedInFailedList = true
+        if (isFinalPass && !allowApprovedInFailedList) return false;
+        
+        return true;
+    }
+    
     if (filterMode === 'passed' && !isFinalPass) return false;
     return true;
   }).length;
@@ -175,8 +190,13 @@ export const ReExamTable: React.FC<ReExamTableProps> = ({
                 const isAcademicPass = checkAcademicPassStatus(student.items);
                 const isFinalPass = isAcademicPass || (!ignorePrincipalApproval && student.isApprovedByPrincipal);
 
-                if (filterMode === 'failed' && isFinalPass) return null;
-                if (filterMode === 'passed' && !isFinalPass) return null;
+                // [NEW 4] Cập nhật logic lọc trong vòng lặp render
+                if (filterMode === 'failed') {
+                    if (isAcademicPass) return null;
+                    if (isFinalPass && !allowApprovedInFailedList) return null;
+                } else if (filterMode === 'passed' && !isFinalPass) {
+                    return null;
+                }
 
                 const groupedItems: Record<string, ReExamItem[]> = {};
                 student.items.forEach(item => {
