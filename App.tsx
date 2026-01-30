@@ -1131,7 +1131,8 @@ export default function App() {
                                         ))}
                                     </select>
 
-                                    {/* Dropdown 2: Class */}
+                                    {/* Dropdown 2: Class - Only show if NOT in Step 5 (Master View) */}
+                                    {currentStep !== 5 && (
                                     <select 
                                         value={selectedClass}
                                         onChange={(e) => setSelectedClass(e.target.value)}
@@ -1141,9 +1142,11 @@ export default function App() {
                                             <option key={cls} value={cls}>{cls}</option>
                                         ))}
                                     </select>
+                                    )}
                                 </div>
 
-                                {/* Right: Class Status Badge */}
+                                {/* Right: Class Status Badge - Hide in Step 5 Master View */}
+                                {currentStep !== 5 && (
                                 <div className="flex items-center gap-2 ml-auto">
                                     <span className="text-sm text-gray-500 hidden sm:inline">Trạng thái lớp:</span>
                                     {(() => {
@@ -1155,6 +1158,7 @@ export default function App() {
                                         );
                                     })()}
                                 </div>
+                                )}
                             </div>
                         )}
                         
@@ -1391,6 +1395,11 @@ export default function App() {
                                             {/* Principal Step 4 Actions */}
                                             {currentStep === 4 && isEditable && (
                                                 <>
+                                                    <button 
+                                                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm text-sm"
+                                                    >
+                                                        <RotateCcw size={16} /> Khôi phục dữ liệu gốc
+                                                    </button>
                                                     <button onClick={handleApproveSelected} className={`flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors shadow-sm text-sm`}>
                                                         <CheckSquare size={16} /> Duyệt lên lớp
                                                     </button>
@@ -1407,7 +1416,7 @@ export default function App() {
                                                         onClick={handleBatchFinalize} 
                                                         disabled={selectedClassesForLock.length === 0 || processStatus !== 'APPROVED'}
                                                         className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors shadow-sm text-sm
-                                                            ${(selectedClassesForLock.length === 0 || processStatus !== 'APPROVED')
+                                                            {(selectedClassesForLock.length === 0 || processStatus !== 'APPROVED')
                                                                 ? 'bg-gray-300 text-white cursor-not-allowed' 
                                                                 : 'bg-red-600 text-white hover:bg-red-700'}`}
                                                     >
@@ -1431,7 +1440,7 @@ export default function App() {
                                                         onClick={handleFinalizeSingleClass}
                                                         disabled={finalizedClasses.includes(selectedClass) || processStatus !== 'APPROVED'}
                                                         className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors shadow-sm text-sm
-                                                            ${(finalizedClasses.includes(selectedClass) || processStatus !== 'APPROVED')
+                                                            {(finalizedClasses.includes(selectedClass) || processStatus !== 'APPROVED')
                                                                 ? 'bg-gray-300 text-white cursor-not-allowed' 
                                                                 : 'bg-red-600 text-white hover:bg-red-700'}`}
                                                     >

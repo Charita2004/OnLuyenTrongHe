@@ -151,7 +151,7 @@ export const InitializationScreen: React.FC<InitializationScreenProps> = ({
         <div className="bg-gray-50 border-t border-black px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-b-lg">
              <div className="text-xs text-gray-500 italic flex items-center gap-1">
                 <RotateCcw size={12} />
-                Dữ liệu được lấy từ Sổ điểm lúc: 10/06/2024 08:00
+                Dữ liệu được lấy từ Sổ điểm lúc: 10/01/2026 08:00
              </div>
 
              <div className="flex items-center gap-3">
