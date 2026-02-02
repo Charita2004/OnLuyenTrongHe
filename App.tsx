@@ -1415,10 +1415,11 @@ export default function App() {
                                                     <button 
                                                         onClick={handleBatchFinalize} 
                                                         disabled={selectedClassesForLock.length === 0 || processStatus !== 'APPROVED'}
-                                                        className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors shadow-sm text-sm
-                                                            {(selectedClassesForLock.length === 0 || processStatus !== 'APPROVED')
+                                                        className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors shadow-sm text-sm ${
+                                                            (selectedClassesForLock.length === 0 || processStatus !== 'APPROVED')
                                                                 ? 'bg-gray-300 text-white cursor-not-allowed' 
-                                                                : 'bg-red-600 text-white hover:bg-red-700'}`}
+                                                                : 'bg-red-600 text-white hover:bg-red-700'
+                                                        }`}
                                                     >
                                                         <Lock size={16} /> 
                                                         {selectedClassesForLock.length > 0 ? `Chốt sổ (${selectedClassesForLock.length}) lớp đã chọn` : `Chốt sổ`}
@@ -1439,10 +1440,11 @@ export default function App() {
                                                     <button 
                                                         onClick={handleFinalizeSingleClass}
                                                         disabled={finalizedClasses.includes(selectedClass) || processStatus !== 'APPROVED'}
-                                                        className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors shadow-sm text-sm
-                                                            {(finalizedClasses.includes(selectedClass) || processStatus !== 'APPROVED')
+                                                        className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors shadow-sm text-sm ${
+                                                            (finalizedClasses.includes(selectedClass) || processStatus !== 'APPROVED')
                                                                 ? 'bg-gray-300 text-white cursor-not-allowed' 
-                                                                : 'bg-red-600 text-white hover:bg-red-700'}`}
+                                                                : 'bg-red-600 text-white hover:bg-red-700'
+                                                        }`}
                                                     >
                                                         <Lock size={16} />
                                                         {finalizedClasses.includes(selectedClass) ? `Đã chốt sổ lớp ${selectedClass}` : `Chốt sổ lớp ${selectedClass}`}
